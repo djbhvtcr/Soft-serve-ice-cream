@@ -1,0 +1,2445 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人資料 · 手帳剪貼簿風格自介 | Personal Scrapbook Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="imge/favicon.ico">
+
+    <!-- Google Fonts: Inter, Noto Sans TC, Plus Jakarta Sans, Caveat (手寫風格字體) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Patrick+Hand&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* 預設主題 (場景 1: 霜淇淋甜點手帳) */
+            --scene-bg-1: #fef0f4;
+            --scene-bg-2: #e0f2fe;
+            --scene-bg-3: #fef9c3;
+            --scene-accent: #7c3aed;
+            --scene-glow: rgba(124, 58, 237, 0.22);
+            --grid-color: rgba(148, 163, 184, 0.15);
+
+            --bg-page: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-border: rgba(255, 255, 255, 0.85);
+            --card-shadow: 0 18px 40px -10px rgba(45, 75, 115, 0.12), 0 0 1px 1px rgba(255, 255, 255, 0.9) inset;
+            --card-hover-shadow: 0 26px 52px -10px rgba(45, 75, 115, 0.18);
+            --text-title: #1e293b;
+            --text-subtitle: #334155;
+            --text-body: #475569;
+            --text-muted: #64748b;
+            --primary-accent: #7c3aed;
+            --accent-glow: rgba(124, 58, 237, 0.25);
+            --fami-blue: #0073c6;
+            --fami-green: #009944;
+            --chip-bg: rgba(241, 245, 249, 0.95);
+            --chip-border: rgba(203, 213, 225, 0.7);
+            --chip-active-bg: #7c3aed;
+            --chip-active-text: #ffffff;
+            --input-bg: #ffffff;
+            --input-border: #cbd5e1;
+            --badge-bg: rgba(124, 58, 237, 0.1);
+            --badge-text: #6d28d9;
+            --transition-speed: 0.35s;
+
+            /* 滑鼠移動視差 CSS 變數 */
+            --mouse-x: 0;
+            --mouse-y: 0;
+        }
+
+        /* 場景 2: 和風文學手帳 */
+        body[data-scene="scene-2"] {
+            --scene-bg-1: #fce7f3;
+            --scene-bg-2: #e0e7ff;
+            --scene-bg-3: #fef3c7;
+            --scene-accent: #db2777;
+            --scene-glow: rgba(219, 39, 119, 0.22);
+            --grid-color: rgba(244, 114, 182, 0.15);
+        }
+
+        /* 場景 3: 賽博星空手帳 */
+        body[data-scene="scene-3"] {
+            --scene-bg-1: #e0e7ff;
+            --scene-bg-2: #ede9fe;
+            --scene-bg-3: #cffafe;
+            --scene-accent: #0284c7;
+            --scene-glow: rgba(2, 132, 199, 0.25);
+            --grid-color: rgba(99, 102, 241, 0.18);
+        }
+
+        /* 深色模式覆寫 */
+        [data-theme="dark"] {
+            --bg-page: #0b0f19;
+            --scene-bg-1: #0f172a;
+            --scene-bg-2: #1e1b4b;
+            --scene-bg-3: #171527;
+            --card-bg: rgba(26, 32, 50, 0.88);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --card-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.65), 0 0 1px 1px rgba(255, 255, 255, 0.06) inset;
+            --card-hover-shadow: 0 28px 56px -12px rgba(0, 0, 0, 0.85);
+            --text-title: #f8fafc;
+            --text-subtitle: #e2e8f0;
+            --text-body: #94a3b8;
+            --text-muted: #64748b;
+            --primary-accent: #a78bfa;
+            --accent-glow: rgba(167, 139, 250, 0.35);
+            --chip-bg: rgba(45, 55, 78, 0.75);
+            --chip-border: rgba(71, 85, 105, 0.6);
+            --chip-active-bg: #a78bfa;
+            --chip-active-text: #0f172a;
+            --input-bg: #1e293b;
+            --input-border: #475569;
+            --badge-bg: rgba(167, 139, 250, 0.16);
+            --badge-text: #c4b5fd;
+            --grid-color: rgba(255, 255, 255, 0.05);
+        }
+
+        [data-theme="dark"][data-scene="scene-2"] {
+            --scene-bg-1: #1f1225;
+            --scene-bg-2: #241432;
+            --scene-bg-3: #111827;
+        }
+
+        [data-theme="dark"][data-scene="scene-3"] {
+            --scene-bg-1: #030712;
+            --scene-bg-2: #0f172a;
+            --scene-bg-3: #1e1b4b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 24px 20px 60px;
+            position: relative;
+            overflow-x: hidden;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        /* ============================================================
+           1. 滑鼠移動時，背景圖片與裝飾圖層視差移動系統
+           ============================================================ */
+        .parallax-background-container {
+            position: fixed;
+            top: -5%;
+            left: -5%;
+            width: 110vw;
+            height: 110vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease;
+        }
+
+        /* 視差層 1：動態漸層光暈與主背景底圖 (深層位移，跟隨滑鼠輕微平移) */
+        .parallax-layer-deep {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, var(--scene-bg-1) 0%, transparent 60%),
+                radial-gradient(circle at 80% 20%, var(--scene-bg-2) 0%, transparent 55%),
+                radial-gradient(circle at 50% 85%, var(--scene-bg-3) 0%, transparent 65%);
+            transform: translate3d(calc(var(--mouse-x) * -25px), calc(var(--mouse-y) * -25px), 0);
+            transition: transform 0.15s ease-out, background var(--transition-speed);
+            will-change: transform;
+        }
+
+        /* 視差層 2：剪貼簿手帳格線／波點紙紋 (中層位移) */
+        .parallax-layer-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(var(--grid-color) 1.5px, transparent 1.5px),
+                linear-gradient(90deg, var(--grid-color) 1.5px, transparent 1.5px);
+            background-size: 32px 32px;
+            opacity: 0.85;
+            transform: translate3d(calc(var(--mouse-x) * 35px), calc(var(--mouse-y) * 35px), 0);
+            transition: transform 0.18s ease-out;
+            will-change: transform;
+        }
+
+        /* 視差層 3：浮動剪貼簿裝飾貼紙小物 (前層大幅度位移) */
+        .parallax-layer-stickers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: translate3d(calc(var(--mouse-x) * 55px), calc(var(--mouse-y) * 55px), 0);
+            transition: transform 0.22s ease-out;
+            will-change: transform;
+        }
+
+        .bg-float-sticker {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            opacity: 0.75;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.08));
+            animation: float-sticker 6s ease-in-out infinite alternate;
+        }
+
+        .bg-float-sticker.s1 {
+            top: 8%;
+            left: 5%;
+            font-size: 2.2rem;
+            animation-duration: 7s;
+        }
+
+        .bg-float-sticker.s2 {
+            top: 18%;
+            right: 7%;
+            font-size: 2.5rem;
+            animation-duration: 5.5s;
+            animation-delay: -2s;
+        }
+
+        .bg-float-sticker.s3 {
+            bottom: 22%;
+            left: 7%;
+            font-size: 2.8rem;
+            animation-duration: 8s;
+            animation-delay: -1s;
+        }
+
+        .bg-float-sticker.s4 {
+            bottom: 12%;
+            right: 8%;
+            font-size: 2.4rem;
+            animation-duration: 6.2s;
+            animation-delay: -3s;
+        }
+
+        .bg-float-sticker.s5 {
+            top: 45%;
+            left: 2%;
+            font-size: 1.8rem;
+            animation-duration: 9s;
+        }
+
+        .bg-float-sticker.s6 {
+            top: 55%;
+            right: 3%;
+            font-size: 2rem;
+            animation-duration: 7.5s;
+        }
+
+        @keyframes float-sticker {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+
+        /* ============================================================
+           2. 剪貼簿設計核心元素 (Washi Tape, Polaroid, Sticky Note, Stamp)
+           ============================================================ */
+
+        /* 2.1 紙膠帶樣式 (Washi Tape) */
+        .washi-tape {
+            position: absolute;
+            height: 28px;
+            min-width: 110px;
+            z-index: 10;
+            opacity: 0.88;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(2px);
+            pointer-events: none;
+            clip-path: polygon(4% 0%, 96% 0%, 100% 12%, 97% 88%, 94% 100%, 6% 100%, 0% 88%, 3% 12%);
+        }
+
+        /* 膠帶色彩花紋變形 */
+        .tape-pink {
+            background: repeating-linear-gradient(45deg,
+                    rgba(244, 114, 182, 0.75),
+                    rgba(244, 114, 182, 0.75) 10px,
+                    rgba(251, 207, 232, 0.75) 10px,
+                    rgba(251, 207, 232, 0.75) 20px);
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-3deg);
+        }
+
+        .tape-lavender {
+            background: repeating-linear-gradient(-45deg,
+                    rgba(167, 139, 250, 0.75),
+                    rgba(167, 139, 250, 0.75) 8px,
+                    rgba(221, 214, 254, 0.75) 8px,
+                    rgba(221, 214, 254, 0.75) 16px);
+            top: -12px;
+            left: 20px;
+            transform: rotate(-6deg);
+        }
+
+        .tape-mint {
+            background: repeating-linear-gradient(45deg,
+                    rgba(52, 211, 153, 0.75),
+                    rgba(52, 211, 153, 0.75) 9px,
+                    rgba(167, 243, 208, 0.75) 9px,
+                    rgba(167, 243, 208, 0.75) 18px);
+            top: -14px;
+            right: 25px;
+            transform: rotate(4deg);
+        }
+
+        .tape-yellow {
+            background: repeating-linear-gradient(45deg,
+                    rgba(251, 191, 36, 0.75),
+                    rgba(251, 191, 36, 0.75) 8px,
+                    rgba(254, 240, 138, 0.75) 8px,
+                    rgba(254, 240, 138, 0.75) 16px);
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(2deg);
+        }
+
+        /* 2.2 拍立得相框 (Polaroid Frame) */
+        .polaroid-card {
+            background: #ffffff;
+            border-radius: 6px;
+            padding: 14px 14px 22px 14px;
+            box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08);
+            position: relative;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        [data-theme="dark"] .polaroid-card {
+            background: #f8fafc;
+            /* 拍立得紙張保持淺色質感，模擬實體相紙 */
+        }
+
+        .polaroid-card:hover {
+            transform: scale(1.05) rotate(0deg) !important;
+            box-shadow: 0 24px 48px -10px rgba(0, 0, 0, 0.28);
+            z-index: 15;
+        }
+
+        .polaroid-photo-box {
+            width: 130px;
+            height: 130px;
+            border-radius: 4px;
+            overflow: hidden;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .polaroid-photo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .polaroid-card:hover .polaroid-photo-box img {
+            transform: scale(1.08);
+        }
+
+        .polaroid-caption {
+            margin-top: 10px;
+            font-family: 'Patrick Hand', 'Caveat', 'Noto Sans TC', cursive, sans-serif;
+            font-size: 1.15rem;
+            color: #334155;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        /* 2.3 便利貼手帳便籤 (Pastel Sticky Note) */
+        .sticky-note {
+            background: #fef08a;
+            color: #713f12;
+            padding: 20px 18px 24px;
+            border-radius: 4px;
+            box-shadow: 3px 12px 24px -5px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.06);
+            position: relative;
+            transform: rotate(-1.5deg);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            font-family: 'Caveat', 'Patrick Hand', 'Noto Sans TC', cursive, sans-serif;
+        }
+
+        .sticky-note.sticky-pink {
+            background: #fbcfe8;
+            color: #831843;
+            transform: rotate(2deg);
+        }
+
+        .sticky-note.sticky-cyan {
+            background: #bae6fd;
+            color: #0369a1;
+            transform: rotate(-2deg);
+        }
+
+        .sticky-note.sticky-green {
+            background: #bbf7d0;
+            color: #14532d;
+            transform: rotate(1.5deg);
+        }
+
+        .sticky-note:hover {
+            transform: rotate(0deg) scale(1.03);
+            box-shadow: 0 18px 34px -6px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        /* 迴紋針與圖釘裝飾 */
+        .pushpin-icon {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+            z-index: 5;
+        }
+
+        .paperclip-icon {
+            position: absolute;
+            top: -14px;
+            right: 18px;
+            font-size: 1.6rem;
+            transform: rotate(15deg);
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.25));
+            z-index: 5;
+        }
+
+        /* 2.4 剪貼簿復古戳章 (Scrapbook Stamp) */
+        .scrapbook-stamp {
+            border: 2.5px dashed var(--primary-accent);
+            color: var(--primary-accent);
+            border-radius: 12px;
+            padding: 6px 14px;
+            font-size: 0.82rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transform: rotate(-4deg);
+            opacity: 0.88;
+            user-select: none;
+            box-shadow: inset 0 0 8px rgba(124, 58, 237, 0.1);
+        }
+
+        .stamp-circle {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            border: 3px double #db2777;
+            color: #db2777;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 900;
+            transform: rotate(12deg);
+            text-align: center;
+            line-height: 1.1;
+            box-shadow: 0 0 10px rgba(219, 39, 119, 0.15);
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        /* ============================================================
+           3. 頂部工具列與剪貼簿功能操作區
+           ============================================================ */
+        .top-bar {
+            width: 100%;
+            max-width: 960px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            z-index: 20;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .brand-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 8px 18px;
+            border-radius: 9999px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-title);
+            letter-spacing: 0.04em;
+        }
+
+        .brand-dot {
+            width: 9px;
+            height: 9px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #10b981;
+            animation: pulse-dot 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.45;
+                transform: scale(0.85);
+            }
+        }
+
+        .top-action-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .clipboard-action-btn {
+            background: linear-gradient(135deg, #7c3aed, #9333ea);
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .clipboard-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(124, 58, 237, 0.45);
+        }
+
+        .theme-toggle-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-title);
+            padding: 8px 16px;
+            border-radius: 9999px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .theme-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border-color: var(--primary-accent);
+        }
+
+        /* 主容器 */
+        .main-container {
+            width: 100%;
+            max-width: 960px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            z-index: 10;
+        }
+
+        /* ============================================================
+           4. 首頁左右按鈕切換：主題展示舞台與物件互動 Carousel
+           ============================================================ */
+        .showcase-carousel-wrapper {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 30px;
+            padding: 34px 28px 28px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: var(--card-shadow);
+            overflow: visible;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            transition: all var(--transition-speed);
+        }
+
+        /* 展示台紙膠帶 */
+        .showcase-carousel-wrapper .washi-tape-top {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-1.5deg);
+            height: 28px;
+            width: 180px;
+            background: repeating-linear-gradient(45deg,
+                    rgba(147, 197, 253, 0.75),
+                    rgba(147, 197, 253, 0.75) 10px,
+                    rgba(219, 234, 254, 0.75) 10px,
+                    rgba(219, 234, 254, 0.75) 20px);
+            clip-path: polygon(3% 0%, 97% 0%, 100% 15%, 98% 85%, 95% 100%, 5% 100%, 0% 85%, 2% 15%);
+            z-index: 15;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        /* 導航控制頭部 */
+        .carousel-controller-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            padding-bottom: 16px;
+            border-bottom: 1.5px dashed var(--card-border);
+        }
+
+        .scene-badge-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scene-pill {
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            font-size: 0.84rem;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .scene-title-text {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-title);
+        }
+
+        /* 左右切換按鈕群組 */
+        .carousel-nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .scene-nav-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            color: var(--text-title);
+            font-size: 1.25rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            user-select: none;
+        }
+
+        .scene-nav-btn:hover {
+            transform: scale(1.15);
+            background: var(--primary-accent);
+            color: #ffffff;
+            border-color: var(--primary-accent);
+            box-shadow: 0 8px 22px var(--accent-glow);
+        }
+
+        .scene-nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        .carousel-dots {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--card-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            width: 26px;
+            border-radius: 9999px;
+            background: var(--primary-accent);
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        /* 輪播舞台容器 */
+        .carousel-stage-container {
+            position: relative;
+            min-height: 380px;
+            overflow: hidden;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        [data-theme="dark"] .carousel-stage-container {
+            background: rgba(15, 23, 42, 0.4);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .carousel-scene-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 30px 28px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(60px) scale(0.96);
+            transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .carousel-scene-slide.active {
+            position: relative;
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0px) scale(1);
+        }
+
+        @media (max-width: 768px) {
+            .carousel-scene-slide {
+                grid-template-columns: 1fr;
+                padding: 24px 18px;
+                min-height: 480px;
+            }
+        }
+
+        /* 場景 1 專屬視覺 (霜淇淋狂熱) */
+        .scene-ice-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .scene-ice-halo {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, rgba(168, 85, 247, 0.2) 60%, transparent 80%);
+            animation: pulse-halo 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse-halo {
+            0% {
+                transform: scale(0.9);
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: scale(1.15);
+                opacity: 0.95;
+            }
+        }
+
+        .hero-ice-img {
+            max-height: 260px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 16px 26px rgba(112, 26, 117, 0.28));
+            animation: float-ice 4s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 2;
+        }
+
+        .hero-ice-img:hover {
+            transform: scale(1.1) rotate(4deg);
+        }
+
+        @keyframes float-ice {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-12px) rotate(2deg);
+            }
+        }
+
+        /* 場景 2 專屬物件 (和風文學手帳) */
+        .scene-japan-items {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            gap: 20px;
+        }
+
+        .omikuji-box {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            color: #ffffff;
+            border-radius: 18px;
+            padding: 22px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 10px;
+            box-shadow: 0 16px 30px rgba(185, 28, 28, 0.35);
+            cursor: pointer;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            user-select: none;
+            max-width: 170px;
+        }
+
+        .omikuji-box:hover {
+            transform: translateY(-6px) scale(1.05);
+        }
+
+        .omikuji-icon {
+            font-size: 2.2rem;
+            animation: bounce-subtle 2s infinite ease-in-out;
+        }
+
+        .omikuji-btn {
+            background: #ffffff;
+            color: #b91c1c;
+            border: none;
+            border-radius: 9999px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 場景 3 專屬物件 (星空賽博手帳) */
+        .scene-cyber-items {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .vinyl-record-wrap {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .vinyl-disc {
+            width: 210px;
+            height: 210px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #0f172a 35%, #1e293b 36%, #0f172a 48%, #1e293b 49%, #000000 70%);
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4), 0 0 20px rgba(14, 165, 233, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spin-vinyl 12s linear infinite;
+            border: 4px solid #334155;
+            transition: transform 0.3s ease;
+        }
+
+        .vinyl-disc.paused {
+            animation-play-state: paused;
+        }
+
+        @keyframes spin-vinyl {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .vinyl-center-label {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.5rem;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ============================================================
+           5. 個人資料英雄卡片 (Profile Hero Card)
+           保留原始標籤: h1 (個人資料), h2 (姓名: I don't know)
+           ============================================================ */
+        .hero-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 42px 34px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: visible;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all var(--transition-speed);
+        }
+
+        .hero-card .washi-tape-hero {
+            position: absolute;
+            top: -14px;
+            left: 40px;
+            width: 140px;
+            height: 28px;
+            background: repeating-linear-gradient(-45deg,
+                    rgba(244, 114, 182, 0.75),
+                    rgba(244, 114, 182, 0.75) 10px,
+                    rgba(253, 230, 138, 0.75) 10px,
+                    rgba(253, 230, 138, 0.75) 20px);
+            clip-path: polygon(4% 0%, 96% 0%, 100% 12%, 97% 88%, 94% 100%, 6% 100%, 0% 88%, 3% 12%);
+            z-index: 12;
+            transform: rotate(-3deg);
+        }
+
+        .hero-card .stamp-badge-hero {
+            position: absolute;
+            top: 24px;
+            right: 28px;
+        }
+
+        /* 拍立得頭像結構 */
+        .avatar-polaroid-container {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 9999px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        /* 保留原始 h1 與 h2 */
+        h1.page-title {
+            font-size: 2.3rem;
+            font-weight: 900;
+            color: var(--text-title);
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        h2.profile-name {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--text-subtitle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .name-highlight {
+            background: linear-gradient(120deg, #7c3aed, #d946ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .profile-bio-summary {
+            font-size: 1.02rem;
+            color: var(--text-body);
+            max-width: 620px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        /* 剪貼簿快捷操作列 (一鍵複製名片等) */
+        .profile-clipboard-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .scrapbook-tool-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1.5px solid var(--card-border);
+            color: var(--text-title);
+            padding: 8px 18px;
+            border-radius: 9999px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] .scrapbook-tool-btn {
+            background: rgba(30, 41, 59, 0.8);
+        }
+
+        .scrapbook-tool-btn:hover {
+            border-color: var(--primary-accent);
+            transform: translateY(-2px);
+            color: var(--primary-accent);
+            box-shadow: 0 6px 16px rgba(124, 58, 237, 0.2);
+        }
+
+        /* ============================================================
+           6. Bento Grid 資訊區塊 (保留 h4 專長:日文、h3 興趣:看小說、全家霜淇淋)
+           ============================================================ */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 30px 26px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-speed);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .card-header-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .card-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.45rem;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(236, 72, 153, 0.15));
+            color: var(--primary-accent);
+            flex-shrink: 0;
+        }
+
+        /* 專長卡片 (保留原始 h4) */
+        h4.skill-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-title);
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skill-tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .skill-tag {
+            background: rgba(124, 58, 237, 0.08);
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            color: var(--primary-accent);
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .skill-quote {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.025);
+            border-left: 3.5px solid var(--primary-accent);
+            border-radius: 4px 10px 10px 4px;
+            font-size: 0.9rem;
+            color: var(--text-subtitle);
+            line-height: 1.5;
+        }
+
+        [data-theme="dark"] .skill-quote {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* 興趣卡片 (保留原始 h3) */
+        h3.hobby-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-title);
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hobby-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .hobby-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.55);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        [data-theme="dark"] .hobby-item {
+            background: rgba(15, 23, 42, 0.5);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .hobby-item:hover {
+            transform: translateX(4px);
+        }
+
+        .hobby-emoji {
+            font-size: 1.6rem;
+            line-height: 1;
+            margin-top: 2px;
+        }
+
+        .hobby-info-title {
+            font-weight: 700;
+            color: var(--text-title);
+            font-size: 0.98rem;
+            margin-bottom: 3px;
+        }
+
+        .hobby-info-desc {
+            font-size: 0.88rem;
+            color: var(--text-body);
+            line-height: 1.45;
+        }
+
+        /* ============================================================
+           7. 霜淇淋探索特區與表單 (保留 img src="imge/ice.png" 與 <form>)
+           ============================================================ */
+        .ice-cream-showcase {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 32px;
+            align-items: center;
+            padding: 36px 40px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 243, 255, 0.88) 100%);
+            position: relative;
+        }
+
+        [data-theme="dark"] .ice-cream-showcase {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(30, 27, 75, 0.88) 100%);
+        }
+
+        @media (max-width: 800px) {
+            .ice-cream-showcase {
+                grid-template-columns: 1fr;
+                padding: 30px 22px;
+            }
+        }
+
+        .ice-visual-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 330px;
+        }
+
+        .ice-badge-current {
+            position: absolute;
+            bottom: 8px;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            color: #7e22ce;
+            padding: 7px 18px;
+            border-radius: 9999px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            box-shadow: 0 8px 20px rgba(126, 34, 206, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 2;
+        }
+
+        [data-theme="dark"] .ice-badge-current {
+            background: rgba(30, 41, 59, 0.92);
+            color: #d8b4fe;
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .flavor-control-area {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .flavor-title-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--fami-green);
+            background: rgba(0, 153, 68, 0.12);
+            padding: 5px 12px;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        .flavor-headline {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--text-title);
+            line-height: 1.3;
+        }
+
+        .flavor-desc {
+            font-size: 0.92rem;
+            color: var(--text-body);
+            line-height: 1.55;
+        }
+
+        .chip-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-subtitle);
+            margin-bottom: -6px;
+        }
+
+        .quick-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip-btn {
+            background: var(--chip-bg);
+            border: 1px solid var(--chip-border);
+            color: var(--text-subtitle);
+            padding: 8px 15px;
+            border-radius: 9999px;
+            font-size: 0.86rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+        }
+
+        .chip-btn:hover {
+            border-color: var(--primary-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .chip-btn.active {
+            background: var(--chip-active-bg);
+            color: var(--chip-active-text);
+            border-color: var(--chip-active-bg);
+            box-shadow: 0 6px 14px rgba(124, 58, 237, 0.35);
+        }
+
+        /* 保留 Form、Label、Input 原生標籤 */
+        .flavor-form-box {
+            margin-top: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .flavor-form-box label {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-title);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .flavor-input {
+            flex: 1;
+            padding: 12px 18px;
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: 14px;
+            font-size: 0.96rem;
+            font-weight: 600;
+            color: var(--text-title);
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .flavor-input:focus {
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
+        }
+
+        .flavor-btn {
+            background: linear-gradient(135deg, #7c3aed, #9333ea);
+            color: #ffffff;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 14px;
+            font-size: 0.94rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 18px -4px rgba(124, 58, 237, 0.4);
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .flavor-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -4px rgba(124, 58, 237, 0.5);
+        }
+
+        /* 外部官方活動連結 (保留原始 a 標籤) */
+        .fami-official-card {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #0073c6 0%, #009944 100%);
+            border-radius: 22px;
+            padding: 24px 30px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 16px 34px -8px rgba(0, 115, 198, 0.38);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fami-official-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 22px 42px -8px rgba(0, 115, 198, 0.5);
+        }
+
+        .fami-card-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 1;
+        }
+
+        .fami-logo-emblem {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        .fami-brand-name {
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.92;
+        }
+
+        .fami-link-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            line-height: 1.25;
+            color: #ffffff;
+        }
+
+        .fami-link-desc {
+            font-size: 0.88rem;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+
+        .fami-action-btn {
+            background: #ffffff;
+            color: #0073c6;
+            font-weight: 800;
+            font-size: 0.92rem;
+            padding: 10px 22px;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            z-index: 1;
+        }
+
+        .fami-official-card:hover .fami-action-btn {
+            background: #f8fafc;
+            transform: translateX(4px);
+        }
+
+        /* ============================================================
+           8. 手帳便利貼留言板 (Scrapbook Sticky Notes Wall)
+           ============================================================ */
+        .scrapbook-board-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 32px 30px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+
+        .board-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .board-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-title);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sticky-wall-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 14px;
+        }
+
+        .sticky-input-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .sticky-custom-input {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1.5px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-title);
+            font-size: 0.92rem;
+            outline: none;
+        }
+
+        .sticky-add-btn {
+            background: #f59e0b;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .sticky-add-btn:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+        }
+
+        /* Toast 提示元件 */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(15, 23, 42, 0.92);
+            color: #ffffff;
+            padding: 12px 26px;
+            border-radius: 9999px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        .toast-notification.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* 頁尾 */
+        .footer-note {
+            margin-top: 42px;
+            text-align: center;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body data-scene="scene-1">
+    <!-- ============================================================
+         滑鼠移動時，背景圖片與裝飾圖層視差移動容器
+         ============================================================ -->
+    <div class="parallax-background-container" id="parallaxBg">
+        <!-- 視差底層：氛圍流光漸層 (隨滑鼠平移) -->
+        <div class="parallax-layer-deep" id="parallaxDeep"></div>
+        <!-- 視差中層：剪貼簿手帳方格／波點紋理 (隨滑鼠反向平移) -->
+        <div class="parallax-layer-grid" id="parallaxGrid"></div>
+        <!-- 視差前層：漂浮貼紙小物 (隨滑鼠大幅度位移) -->
+        <div class="parallax-layer-stickers" id="parallaxStickers">
+            <span class="bg-float-sticker s1" title="手帳星星">✨</span>
+            <span class="bg-float-sticker s2" title="草莓霜淇淋">🍦</span>
+            <span class="bg-float-sticker s3" title="櫻花花瓣">🌸</span>
+            <span class="bg-float-sticker s4" title="日系御守">🎌</span>
+            <span class="bg-float-sticker s5" title="拍立得相機">📷</span>
+            <span class="bg-float-sticker s6" title="音樂黑膠">🎵</span>
+        </div>
+    </div>
+
+    <!-- 頂端導航與剪貼簿快捷操作 -->
+    <header class="top-bar">
+        <div class="brand-pill">
+            <span class="brand-dot"></span>
+            <span>SCRAPBOOK · 個人手帳剪貼簿</span>
+        </div>
+        <div class="top-action-group">
+            <button type="button" class="clipboard-action-btn" id="copyBioBtn" title="複製自介名片至剪貼簿">
+                <span>📋 複製自介名片</span>
+            </button>
+            <button id="themeToggle" class="theme-toggle-btn" type="button" title="切換深淺模式">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">深色模式</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- ============================================================
+             首頁左右按鈕：主題場景與物件互動展示台 (Homepage Scene Switcher)
+             ============================================================ -->
+        <section class="showcase-carousel-wrapper">
+            <div class="washi-tape-top"></div>
+
+            <!-- 輪播控制標題列與左右切換按鈕 -->
+            <div class="carousel-controller-header">
+                <div class="scene-badge-indicator">
+                    <span class="scene-pill" id="scenePill">✨ THEME 01</span>
+                    <span class="scene-title-text" id="sceneTitleText">🍦 甜點手帳 · 霜淇淋狂想曲</span>
+                </div>
+                <div class="carousel-nav-controls">
+                    <button type="button" id="prevSceneBtn" class="scene-nav-btn" title="切換至上一個場景" aria-label="上一個主題">
+                        ◀
+                    </button>
+                    <div class="carousel-dots" id="carouselDots">
+                        <span class="carousel-dot active" data-index="0" title="主題一"></span>
+                        <span class="carousel-dot" data-index="1" title="主題二"></span>
+                        <span class="carousel-dot" data-index="2" title="主題三"></span>
+                    </div>
+                    <button type="button" id="nextSceneBtn" class="scene-nav-btn" title="切換至下一個場景" aria-label="下一個主題">
+                        ▶
+                    </button>
+                </div>
+            </div>
+
+            <!-- 輪播舞台場景 -->
+            <div class="carousel-stage-container" id="carouselStage">
+
+                <!-- 場景 1：🍦 甜點食光 · 全家霜淇淋手帳 -->
+                <div class="carousel-scene-slide active" id="slide-1" data-scene-name="scene-1">
+                    <div class="scene-ice-visual">
+                        <div class="scene-ice-halo"></div>
+                        <img src="imge/ice.png" alt="全家霜淇淋" class="hero-ice-img" id="carouselIceImg"
+                            title="點擊全家霜淇淋互動彈跳！">
+                        <div class="scrapbook-stamp" style="margin-top: 14px;">
+                            <span>🍦 Fami!ce Special Selection</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 14px;">
+                        <div class="sticky-note sticky-pink">
+                            <span class="pushpin-icon">📌</span>
+                            <div style="font-size: 1.35rem; font-weight: 700; margin-bottom: 6px;">
+                                🍨 今日甜點心情手帳
+                            </div>
+                            <p style="font-size: 1.05rem; line-height: 1.5;">
+                                每一季全家霜淇淋的限定口味，都是平凡生活裡最期待的驚喜！目前最推薦：<strong>仙人掌</strong> 與 <strong>靜岡抹茶</strong>！
+                            </p>
+                            <div style="margin-top: 10px; font-size: 0.95rem; font-weight: 700;">
+                                — 點擊下方口味按鈕即可切換特調滋味 ✨
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 場景 2：🌸 文學手帳 · 日文漫遊日記 -->
+                <div class="carousel-scene-slide" id="slide-2" data-scene-name="scene-2">
+                    <div class="scene-japan-items">
+                        <!-- 拍立得相框相片 -->
+                        <div class="polaroid-card" style="transform: rotate(-3deg);">
+                            <div class="washi-tape tape-lavender"></div>
+                            <div class="polaroid-photo-box">
+                                <img src="imge/1138609_124668-OQK0SS-985.jpg" alt="日系寫真手帳"
+                                    onerror="this.src='imge/ice.png'">
+                            </div>
+                            <div class="polaroid-caption">日本語＆小説の世界 📚</div>
+                        </div>
+
+                        <!-- 幸運御守互動物件 (點擊抽籤) -->
+                        <div class="omikuji-box" id="omikujiTrigger" title="點擊抽取今日幸運籤！">
+                            <span class="omikuji-icon">🏮</span>
+                            <div style="font-weight: 800; font-size: 0.92rem; letter-spacing: 0.05em;">開運御守</div>
+                            <div id="omikujiResultText" style="font-size: 0.8rem; line-height: 1.3;">點擊抽籤 ↗</div>
+                            <button type="button" class="omikuji-btn">抽籤！</button>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 14px;">
+                        <div class="sticky-note sticky-green">
+                            <span class="paperclip-icon">📎</span>
+                            <div style="font-size: 1.35rem; font-weight: 700; margin-bottom: 6px;">
+                                🎌 一期一會 · 日文手寫書籤
+                            </div>
+                            <p style="font-size: 1.05rem; line-height: 1.5;">
+                                「一期一会（いちごいちえ）」—
+                                珍惜與每本書、每個人、每一支霜淇淋相遇的當下。在文字小說的世界中，發掘超越現實的無盡靈感。
+                            </p>
+                            <div style="margin-top: 10px; font-size: 0.95rem; font-weight: 700;">
+                                📖 正在閱讀：日文輕小說與散文
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 場景 3：🌌 星空賽博 · 霓虹夢境手帳 -->
+                <div class="carousel-scene-slide" id="slide-3" data-scene-name="scene-3">
+                    <div class="scene-cyber-items">
+                        <!-- 黑膠唱片旋轉物件 -->
+                        <div class="vinyl-record-wrap" id="vinylToggle" title="點擊切換音樂黑膠播放/暫停！">
+                            <div class="vinyl-disc" id="vinylDisc">
+                                <div class="vinyl-center-label">🎵</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 14px;">
+                        <div class="sticky-note sticky-cyan">
+                            <span class="pushpin-icon">📌</span>
+                            <div style="font-size: 1.35rem; font-weight: 700; margin-bottom: 6px;">
+                                🌌 Cyber Lo-Fi 靈感星系
+                            </div>
+                            <p style="font-size: 1.05rem; line-height: 1.5;">
+                                當夜幕低垂，戴上耳機播放 Lo-Fi 音樂，邊敲打代碼邊品味文字的節奏。星空下的剪貼簿，記錄著探索數位世界的奇幻夢想。
+                            </p>
+                            <div style="margin-top: 10px; font-size: 0.95rem; font-weight: 700;">
+                                🎧 循環播放中：Midnight Chill Vibes
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============================================================
+             主個人資料卡片 (Hero Profile Card)
+             保留原始 h1: 個人資料, h2: 姓名:I don't know
+             ============================================================ -->
+        <section class="hero-card">
+            <div class="washi-tape-hero"></div>
+            <div class="stamp-circle stamp-badge-hero">
+                <span>PORTFOLIO</span>
+                <span style="font-size: 1rem;">★</span>
+                <span>ORIGINAL</span>
+            </div>
+
+            <!-- 拍立得風格個人照片 -->
+            <div class="avatar-polaroid-container">
+                <div class="polaroid-card" style="transform: rotate(2deg);" title="個人拍立得相框">
+                    <div class="washi-tape tape-yellow"></div>
+                    <div class="polaroid-photo-box">
+                        <img src="imge/1138609_124668-OQK0SS-985.jpg" alt="個人頭像" class="avatar-img"
+                            onerror="this.src='imge/ice.png'">
+                    </div>
+                    <div class="polaroid-caption">Profile Snapshot 🍦</div>
+                </div>
+            </div>
+
+            <span class="section-tag">ABOUT ME · 剪貼簿手帳檔案</span>
+
+            <!-- 保留原始 h1: 個人資料 -->
+            <h1 class="page-title">個人資料</h1>
+
+            <!-- 保留原始 h2: 姓名:I don't know -->
+            <h2 class="profile-name">
+                <span>姓名：</span>
+                <span class="name-highlight">I don't know</span>
+            </h2>
+
+            <p class="profile-bio-summary">
+                熱愛生活中的每一份甜美滋味。在文字與故事的世界中旅行，在全家霜淇淋的濃郁香氣中充電，持續運用日文開拓新視野。
+            </p>
+
+            <!-- 剪貼簿互動工具列 -->
+            <div class="profile-clipboard-bar">
+                <button type="button" class="scrapbook-tool-btn" id="copyIntroBtn" title="複製完整自我介紹">
+                    <span>📋 複製完整自介文字</span>
+                </button>
+                <button type="button" class="scrapbook-tool-btn" id="copyIceFlavorsBtn" title="複製霜淇淋推薦名單">
+                    <span>🍦 複製霜淇淋口袋名單</span>
+                </button>
+                <button type="button" class="scrapbook-tool-btn" id="stampSparkleBtn" title="在頁面蓋上星星戳章">
+                    <span>✨ 隨機蓋戳章</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             Bento Grid 雙欄區塊
+             保留原始 h4: 專長:日文, h3: 興趣:看小說、全家霜淇淋
+             ============================================================ -->
+        <div class="bento-grid">
+            <!-- 專長卡片 (保留原始 h4: 專長:日文) -->
+            <div class="glass-card">
+                <div class="washi-tape tape-lavender" style="top: -12px; left: 16px;"></div>
+                <div class="card-header-row">
+                    <div class="card-icon-box">🇯🇵</div>
+                    <div>
+                        <h4 class="skill-title">專長：日文 (Japanese)</h4>
+                        <span style="font-size: 0.82rem; color: var(--text-muted);">Language & Culture</span>
+                    </div>
+                </div>
+                <p style="font-size: 0.94rem; line-height: 1.6; color: var(--text-body);">
+                    熱愛日本語言與文化，熱衷接觸第一手的日文小說、動漫以及流行文化。
+                </p>
+                <div class="skill-tag-group">
+                    <span class="skill-tag">🎌 語言學習</span>
+                    <span class="skill-tag">💬 日常對話</span>
+                    <span class="skill-tag">📚 日文小說閱讀</span>
+                </div>
+                <div class="skill-quote">
+                    「アイスクリームが大好きです！✨」<br>
+                    <small style="color: var(--text-muted); font-size: 0.8rem;">— 最喜歡吃霜淇淋了！</small>
+                </div>
+            </div>
+
+            <!-- 興趣卡片 (保留原始 h3: 興趣:看小說、全家霜淇淋) -->
+            <div class="glass-card">
+                <div class="washi-tape tape-mint" style="top: -12px; right: 20px;"></div>
+                <div class="card-header-row">
+                    <div class="card-icon-box">✨</div>
+                    <div>
+                        <h3 class="hobby-title">興趣：看小說、全家霜淇淋</h3>
+                        <span style="font-size: 0.82rem; color: var(--text-muted);">Hobbies & Passions</span>
+                    </div>
+                </div>
+
+                <div class="hobby-items-list">
+                    <div class="hobby-item">
+                        <span class="hobby-emoji">📖</span>
+                        <div>
+                            <div class="hobby-info-title">看小說與閱讀</div>
+                            <div class="hobby-info-desc">沉浸在精彩的故事設定與文字鋪陳中，享受無限想像空間。</div>
+                        </div>
+                    </div>
+                    <div class="hobby-item">
+                        <span class="hobby-emoji">🍦</span>
+                        <div>
+                            <div class="hobby-info-title">全家霜淇淋 (Fami!ce)</div>
+                            <div class="hobby-info-desc">全台新品與聯名口味雷達！每檔限定都一定要親自嚐鮮打卡。</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================
+                 全家霜淇淋互動特展區 (保留原始 img src="imge/ice.png" 與 <form> 表單)
+                 ============================================================ -->
+            <div class="glass-card ice-cream-showcase">
+                <div class="washi-tape tape-pink" style="top: -12px; left: 40px;"></div>
+
+                <!-- 左側：視覺動畫與目前口味展示 -->
+                <div class="ice-visual-wrap">
+                    <div class="scene-ice-halo" id="flavorHalo"></div>
+                    <img src="imge/ice.png" alt="全家霜淇淋" class="hero-ice-img" id="iceImage" title="點擊冰淇淋彈跳互動！">
+                    <div class="ice-badge-current" id="activeFlavorBadge">
+                        <span>🌵 目前最愛口味：</span>
+                        <strong id="badgeFlavorText">仙人掌</strong>
+                    </div>
+                </div>
+
+                <!-- 右側：表單與快捷切換互動 -->
+                <div class="flavor-control-area">
+                    <div class="flavor-title-badge">🍦 FAMI!CE SPECIAL</div>
+                    <div class="flavor-headline">最愛霜淇淋口味探索</div>
+                    <p class="flavor-desc">
+                        你也是全家霜淇淋的死忠粉絲嗎？點擊熱門口味立即切換，或在下方欄位自訂輸入你最難忘的夢幻口味！
+                    </p>
+
+                    <!-- 快捷口味選單 -->
+                    <span class="chip-label">熱門口味快速切換：</span>
+                    <div class="quick-chips">
+                        <button type="button" class="chip-btn active" data-flavor="仙人掌">🌵 仙人掌</button>
+                        <button type="button" class="chip-btn" data-flavor="靜岡抹茶">🍵 靜岡抹茶</button>
+                        <button type="button" class="chip-btn" data-flavor="比利時巧克力">🍫 比利時巧克力</button>
+                        <button type="button" class="chip-btn" data-flavor="巨峰葡萄">🍇 巨峰葡萄</button>
+                        <button type="button" class="chip-btn" data-flavor="炭焙烏龍">🍵 炭焙烏龍</button>
+                    </div>
+
+                    <!-- 保留原始 Form、Label 與 Input 原生語法 -->
+                    <form id="flavorForm" class="flavor-form-box"
+                        onsubmit="event.preventDefault(); updateCustomFlavor();">
+                        <label for="fname">
+                            <span>🍨 霜淇淋口味：</span>
+                        </label>
+                        <div class="input-group">
+                            <input type="text" id="fname" name="fname" value="仙人掌" class="flavor-input"
+                                placeholder="請輸入喜愛的口味...">
+                            <button type="submit" class="flavor-btn">
+                                <span>確認喜好</span>
+                                <span>✨</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ============================================================
+                 剪貼簿互動便籤牆 (Interactive Scrapbook Memo Wall)
+                 ============================================================ -->
+            <div class="glass-card scrapbook-board-card" style="grid-column: 1 / -1;">
+                <div class="board-header">
+                    <div class="board-title">
+                        <span>📌 手帳剪貼簿留言看板</span>
+                        <span class="scrapbook-stamp" style="font-size: 0.72rem;">MEMO WALL</span>
+                    </div>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">
+                        寫下想說的話或推薦口味，立即釘在剪貼簿上！
+                    </span>
+                </div>
+
+                <div class="sticky-wall-grid" id="stickyWallGrid">
+                    <!-- 預設便籤 1 -->
+                    <div class="sticky-note sticky-yellow">
+                        <span class="pushpin-icon">📌</span>
+                        <div style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">
+                            💡 今日待辦 Memo
+                        </div>
+                        <p style="font-size: 1.02rem; line-height: 1.45;">
+                            下課後順路去全家買新檔霜淇淋嚐鮮，順便複習 50 音與日文單字筆記！
+                        </p>
+                    </div>
+
+                    <!-- 預設便籤 2 -->
+                    <div class="sticky-note sticky-pink">
+                        <span class="paperclip-icon">📎</span>
+                        <div style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">
+                            📖 小說書單備忘
+                        </div>
+                        <p style="font-size: 1.02rem; line-height: 1.45;">
+                            沉浸在奇幻冒險世界的章節裡，配上一杯無糖綠茶與霜淇淋是最高享受！
+                        </p>
+                    </div>
+
+                    <!-- 預設便籤 3 -->
+                    <div class="sticky-note sticky-green">
+                        <span class="pushpin-icon">📌</span>
+                        <div style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">
+                            🍦 口袋名單筆記
+                        </div>
+                        <p style="font-size: 1.02rem; line-height: 1.45;">
+                            最難忘口味投票：澎湖仙人掌酸甜清爽第一名，靜岡抹茶濃郁微苦不甜膩！
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 新增自訂便籤輸入 -->
+                <form id="addMemoForm" class="sticky-input-row" onsubmit="event.preventDefault(); addNewStickyNote();">
+                    <input type="text" id="newMemoInput" class="sticky-custom-input" placeholder="寫下你的隨手便利貼筆記..."
+                        maxlength="80">
+                    <button type="submit" class="sticky-add-btn">
+                        <span>📌 釘上便籤</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- 全家官方活動網站連結 (保留原始 a href="https://nevent.family.com.tw/..." target="_blank") -->
+            <a href="https://nevent.family.com.tw/ice_cream/products.html" target="_blank" class="fami-official-card"
+                title="前往全家霜淇淋官方活動網站">
+                <div class="fami-card-content">
+                    <div class="fami-logo-emblem">🍦</div>
+                    <div class="fami-text-group">
+                        <span class="fami-brand-name">FamilyMart · 全家便利商店</span>
+                        <div class="fami-link-title">全家霜淇淋 (Fami!ce) 最新產品專頁</div>
+                        <div class="fami-link-desc">點擊直達官方活動網站，查詢全台門市販售與當季限定聯名 ↗</div>
+                    </div>
+                </div>
+                <div class="fami-action-btn">
+                    <span>探索最新口味</span>
+                    <span>→</span>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <!-- Toast 提示通知元件 -->
+    <div id="toast" class="toast-notification">
+        <span id="toastIcon">🍦</span>
+        <span id="toastMsg">已將口味切換為：仙人掌</span>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer class="footer-note">
+        <p>© 2026 個人特色簡介 · 手帳剪貼簿風格 · Crafted with Passion & Soft Serve 🍦</p>
+        <p style="font-size: 0.8rem;">Parallax Mouse Movement · Scrapbook Aesthetic · Scene Switcher</p>
+    </footer>
+
+    <!-- ============================================================
+         互動腳本
+         1. 滑鼠移動背景視差平滑跟隨 (Parallax Movement)
+         2. 首頁左右按鈕切換背景與物件互動 (Scene Switcher Carousel)
+         3. 剪貼簿互動 (複製名片、複製名單、便利貼釘板、蓋印章)
+         4. 霜淇淋表單與自訂口味
+         5. 深淺色模式切換
+         ============================================================ -->
+    <script>
+        // -------------------------------------------------------------
+        // 1. 滑鼠移動時，背景圖片與裝飾圖層視差跟隨效果 (Parallax)
+        // -------------------------------------------------------------
+        let targetMouseX = 0;
+        let targetMouseY = 0;
+        let currentMouseX = 0;
+        let currentMouseY = 0;
+        let isParallaxRunning = true;
+
+        window.addEventListener('mousemove', (e) => {
+            // 將螢幕座標歸一化為 -1 到 +1 區間
+            targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+            targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+        });
+
+        // 當滑鼠移出視窗時，緩慢歸零
+        window.addEventListener('mouseleave', () => {
+            targetMouseX = 0;
+            targetMouseY = 0;
+        });
+
+        // 利用 requestAnimationFrame 配合 Lerp 實現絲滑 60fps 視差移動
+        function animateParallax() {
+            if (isParallaxRunning) {
+                // 緩動插值 (線性內插法 Lerp)
+                currentMouseX += (targetMouseX - currentMouseX) * 0.08;
+                currentMouseY += (targetMouseY - currentMouseY) * 0.08;
+
+                document.documentElement.style.setProperty('--mouse-x', currentMouseX.toFixed(4));
+                document.documentElement.style.setProperty('--mouse-y', currentMouseY.toFixed(4));
+            }
+            requestAnimationFrame(animateParallax);
+        }
+        requestAnimationFrame(animateParallax);
+
+        // -------------------------------------------------------------
+        // 2. 首頁左右按鈕：切換背景與物件互動 (Scene Switcher Carousel)
+        // -------------------------------------------------------------
+        const scenes = [
+            {
+                id: 'scene-1',
+                pill: '🍦 THEME 01',
+                title: '🍦 甜點手帳 · 霜淇淋狂想曲',
+                desc: '馬卡龍甜美粉彩漸層，搭配全家霜淇淋特選！'
+            },
+            {
+                id: 'scene-2',
+                pill: '🌸 THEME 02',
+                title: '🌸 文學手帳 · 日文漫遊日記',
+                desc: '和風櫻粉手帳質感，翻閱小說與抽取開運御守！'
+            },
+            {
+                id: 'scene-3',
+                pill: '🌌 THEME 03',
+                title: '🌌 星空賽博 · 霓虹夢境手帳',
+                desc: '夜幕極光與Lo-Fi律動，探索星際剪貼簿！'
+            }
+        ];
+
+        let currentSceneIndex = 0;
+        const prevSceneBtn = document.getElementById('prevSceneBtn');
+        const nextSceneBtn = document.getElementById('nextSceneBtn');
+        const scenePill = document.getElementById('scenePill');
+        const sceneTitleText = document.getElementById('sceneTitleText');
+        const carouselDots = document.querySelectorAll('.carousel-dot');
+        const slides = [
+            document.getElementById('slide-1'),
+            document.getElementById('slide-2'),
+            document.getElementById('slide-3')
+        ];
+
+        function switchScene(index, direction = 'next') {
+            if (index < 0) index = scenes.length - 1;
+            if (index >= scenes.length) index = 0;
+            currentSceneIndex = index;
+
+            const sceneData = scenes[currentSceneIndex];
+
+            // 1. 更新 body 的 data-scene 屬性以觸發整體背景顏色切換
+            document.body.setAttribute('data-scene', sceneData.id);
+
+            // 2. 更新標題與徽章文字
+            scenePill.textContent = sceneData.pill;
+            sceneTitleText.textContent = sceneData.title;
+
+            // 3. 更新輪播投影片 active 狀態
+            slides.forEach((slide, idx) => {
+                if (idx === currentSceneIndex) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+
+            // 4. 更新輪播指示圓點
+            carouselDots.forEach((dot, idx) => {
+                if (idx === currentSceneIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+
+            showToast('已切換主題：' + sceneData.title, '🎨');
+        }
+
+        prevSceneBtn.addEventListener('click', () => {
+            switchScene(currentSceneIndex - 1, 'prev');
+        });
+
+        nextSceneBtn.addEventListener('click', () => {
+            switchScene(currentSceneIndex + 1, 'next');
+        });
+
+        carouselDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const idx = parseInt(dot.getAttribute('data-index'), 10);
+                switchScene(idx);
+            });
+        });
+
+        // 鍵盤左右鍵快捷切換
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                switchScene(currentSceneIndex - 1, 'prev');
+            } else if (e.key === 'ArrowRight') {
+                switchScene(currentSceneIndex + 1, 'next');
+            }
+        });
+
+        // -------------------------------------------------------------
+        // 3. 舞台物件特有互動 (御守抽籤、黑膠唱片、輪播冰淇淋)
+        // -------------------------------------------------------------
+        // (1) 開運御守抽籤互動
+        const omikujiTrigger = document.getElementById('omikujiTrigger');
+        const omikujiResultText = document.getElementById('omikujiResultText');
+        const omikujiFortunes = [
+            '【大吉 🌸】今日適合享用仙人掌霜淇淋！',
+            '【超吉 🍵】靜岡抹茶濃郁微苦，學習力大爆發！',
+            '【大吉 🍫】比利時巧克力帶來無窮甜美靈感！',
+            '【開運 ✨】閱讀小說靈感如泉湧，萬事順心！',
+            '【吉 📖】日文書本翻到精彩篇章，心情大好！'
+        ];
+
+        omikujiTrigger.addEventListener('click', () => {
+            omikujiTrigger.style.transform = 'scale(1.15) rotate(8deg)';
+            setTimeout(() => {
+                omikujiTrigger.style.transform = '';
+            }, 300);
+
+            const randomFortune = omikujiFortunes[Math.floor(Math.random() * omikujiFortunes.length)];
+            omikujiResultText.textContent = randomFortune;
+            showToast('御守抽籤結果：' + randomFortune, '🎌');
+        });
+
+        // (2) 黑膠唱片旋轉暫停互動
+        const vinylToggle = document.getElementById('vinylToggle');
+        const vinylDisc = document.getElementById('vinylDisc');
+        vinylToggle.addEventListener('click', () => {
+            const isPaused = vinylDisc.classList.toggle('paused');
+            showToast(isPaused ? '黑膠唱片已暫停 ⏸' : '黑膠唱片旋轉播放中 🎵', '🎶');
+        });
+
+        // (3) 輪播舞台冰淇淋點擊彈跳
+        const carouselIceImg = document.getElementById('carouselIceImg');
+        carouselIceImg.addEventListener('click', () => {
+            carouselIceImg.style.transform = 'scale(1.2) rotate(-8deg)';
+            setTimeout(() => {
+                carouselIceImg.style.transform = '';
+            }, 350);
+            showToast('Fami!ce 霜淇淋甜美度滿分！🍦', '😋');
+        });
+
+        // -------------------------------------------------------------
+        // 4. 剪貼簿元素互動 (複製至剪貼簿、新增便利貼、隨機印章)
+        // -------------------------------------------------------------
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toastMsg');
+        const toastIcon = document.getElementById('toastIcon');
+        let toastTimer = null;
+
+        function showToast(message, icon = '🍦') {
+            toastMsg.textContent = message;
+            toastIcon.textContent = icon;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2600);
+        }
+
+        // 複製文本到剪貼簿通用函數
+        async function copyToClipboard(text, successMsg) {
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    // 相容後備方案
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '-9999px';
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                }
+                showToast(successMsg, '📋');
+            } catch (err) {
+                showToast('已複製內容至剪貼簿！', '✨');
+            }
+        }
+
+        // 頂部與英雄區：複製自介名片
+        const copyBioText = `✨ 【個人自介 · 手帳剪貼簿】
+• 姓名：I don't know
+• 專長：日文 (Japanese) - 喜愛日本文化與語言
+• 興趣：看小說、全家霜淇淋 (Fami!ce)
+• 最愛口味：仙人掌、靜岡抹茶、比利時巧克力
+• 手帳名言：「アイスクリームが大好きです！✨」
+📎 記錄生活中的每一份甜美與感動！`;
+
+        document.getElementById('copyBioBtn').addEventListener('click', () => {
+            copyToClipboard(copyBioText, '已複製自介名片至剪貼簿！');
+        });
+
+        document.getElementById('copyIntroBtn').addEventListener('click', () => {
+            copyToClipboard(copyBioText, '已複製完整自介文字至剪貼簿！');
+        });
+
+        // 複製霜淇淋清單
+        document.getElementById('copyIceFlavorsBtn').addEventListener('click', () => {
+            const currentFlavor = document.getElementById('fname').value || '仙人掌';
+            const iceText = `🍦 【全家霜淇淋 Fami!ce 口袋清單】
+• 目前推薦：${currentFlavor}
+• 熱門必吃：🌵 仙人掌、🍵 靜岡抹茶、🍫 比利時巧克力、🍇 巨峰葡萄、🍵 炭焙烏龍
+• 官方專頁：https://nevent.family.com.tw/ice_cream/products.html`;
+            copyToClipboard(iceText, '已複製霜淇淋口袋名單至剪貼簿！');
+        });
+
+        // 隨機蓋戳章特效
+        const stampSparkleBtn = document.getElementById('stampSparkleBtn');
+        const stampEmojis = ['✨', '🍦', '🌸', '🎌', '⭐', '📖', '💖', '🍨'];
+        stampSparkleBtn.addEventListener('click', (e) => {
+            const stamp = document.createElement('div');
+            const randomEmoji = stampEmojis[Math.floor(Math.random() * stampEmojis.length)];
+            stamp.textContent = randomEmoji;
+            stamp.style.position = 'fixed';
+            stamp.style.left = (Math.random() * 80 + 10) + 'vw';
+            stamp.style.top = (Math.random() * 70 + 15) + 'vh';
+            stamp.style.fontSize = '2.5rem';
+            stamp.style.pointerEvents = 'none';
+            stamp.style.zIndex = '999';
+            stamp.style.filter = 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))';
+            stamp.style.animation = 'float-sticker 3s ease-out forwards';
+            document.body.appendChild(stamp);
+
+            setTimeout(() => {
+                stamp.remove();
+            }, 3000);
+
+            showToast('已在剪貼簿手帳蓋上印章：' + randomEmoji, randomEmoji);
+        });
+
+        // 新增自訂便籤到手帳看板
+        const stickyWallGrid = document.getElementById('stickyWallGrid');
+        const newMemoInput = document.getElementById('newMemoInput');
+        const noteColorClasses = ['sticky-yellow', 'sticky-pink', 'sticky-green', 'sticky-cyan'];
+        const pinIcons = ['📌', '📎'];
+
+        function addNewStickyNote() {
+            const val = newMemoInput.value.trim();
+            if (!val) {
+                showToast('請先輸入便籤內容喔！', '✏️');
+                return;
+            }
+
+            const colorClass = noteColorClasses[Math.floor(Math.random() * noteColorClasses.length)];
+            const pinIcon = pinIcons[Math.floor(Math.random() * pinIcons.length)];
+            const rotateDeg = (Math.random() * 6 - 3).toFixed(1);
+
+            const newNote = document.createElement('div');
+            newNote.className = `sticky-note ${colorClass}`;
+            newNote.style.transform = `rotate(${rotateDeg}deg)`;
+            newNote.innerHTML = `
+                <span class="${pinIcon === '📌' ? 'pushpin-icon' : 'paperclip-icon'}">${pinIcon}</span>
+                <div style="font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;">
+                    📝 手帳新記事
+                </div>
+                <p style="font-size: 1.02rem; line-height: 1.45;">
+                    ${val}
+                </p>
+            `;
+
+            stickyWallGrid.prepend(newNote);
+            newMemoInput.value = '';
+            showToast('已成功釘上新手帳便籤！', '📌');
+        }
+
+        // -------------------------------------------------------------
+        // 5. 霜淇淋表單與自訂口味互動 (保留原始 id="fname", updateCustomFlavor 等)
+        // -------------------------------------------------------------
+        const fnameInput = document.getElementById('fname');
+        const badgeFlavorText = document.getElementById('badgeFlavorText');
+        const chipButtons = document.querySelectorAll('.chip-btn');
+        const iceImage = document.getElementById('iceImage');
+
+        function triggerIceBump() {
+            iceImage.style.transform = 'scale(1.18) rotate(6deg)';
+            setTimeout(() => {
+                iceImage.style.transform = '';
+            }, 300);
+        }
+
+        iceImage.addEventListener('click', () => {
+            triggerIceBump();
+            showToast('冰淇淋今天也很美味！✨', '😋');
+        });
+
+        function setFlavor(flavorName) {
+            fnameInput.value = flavorName;
+            badgeFlavorText.textContent = flavorName;
+
+            chipButtons.forEach(btn => {
+                if (btn.getAttribute('data-flavor') === flavorName) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            triggerIceBump();
+            showToast('已切換口味為：' + flavorName);
+        }
+
+        chipButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const flavor = btn.getAttribute('data-flavor');
+                setFlavor(flavor);
+            });
+        });
+
+        fnameInput.addEventListener('input', (e) => {
+            const val = e.target.value.trim() || '未設定';
+            badgeFlavorText.textContent = val;
+            chipButtons.forEach(btn => {
+                if (btn.getAttribute('data-flavor') === val) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        });
+
+        function updateCustomFlavor() {
+            const val = fnameInput.value.trim() || '特調口味';
+            badgeFlavorText.textContent = val;
+            triggerIceBump();
+            showToast('已確認最愛口味：' + val, '✨');
+        }
+
+        // -------------------------------------------------------------
+        // 6. 深淺色模式切換
+        // -------------------------------------------------------------
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+
+        function setTheme(isDark) {
+            if (isDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = '淺色模式';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = '深色模式';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            setTheme(true);
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            setTheme(!isDark);
+        });
+    </script>
+</body>
+
+</html>
